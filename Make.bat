@@ -331,7 +331,8 @@ REM Main build sequence Ends
     wget https://github.com/electron/rcedit/releases/download/v2.0.0/rcedit-x64.exe -O "%TMPDIR%\rcedit-x64.exe"
 
     ECHO Replacing executable icon, description, version...
-    %TMPDIR%\rcedit-x64.exe "%BUILDROOT%\runtime\pgAdmin4.exe" --set-icon "%WD%\pkg\win32\Resources\pgAdmin4.ico"
+    REM Fluent fork: see FORK_PATCHES.md (Datalith icon; the installer names the exe Datalith.exe)
+    %TMPDIR%\rcedit-x64.exe "%BUILDROOT%\runtime\pgAdmin4.exe" --set-icon "%WD%\pkg\win32\Resources\datalith.ico"
     %TMPDIR%\rcedit-x64.exe "%BUILDROOT%\runtime\pgAdmin4.exe" --set-version-string "FileDescription" "%APP_NAME%"
     %TMPDIR%\rcedit-x64.exe "%BUILDROOT%\runtime\pgAdmin4.exe" --set-version-string "ProductName" "%APP_NAME%"
     %TMPDIR%\rcedit-x64.exe "%BUILDROOT%\runtime\pgAdmin4.exe" --set-product-version "%APP_VERSION%"
@@ -377,7 +378,7 @@ REM Main build sequence Ends
     IF NOT EXIST "%DISTROOT%" MKDIR "%DISTROOT%"
 
     ECHO Copying icon file...
-    COPY "%WD%\pkg\win32\Resources\pgAdmin4.ico" "%BUILDROOT%" > nul || EXIT /B 1
+    COPY "%WD%\pkg\win32\Resources\datalith.ico" "%BUILDROOT%" > nul || EXIT /B 1
 
     CD "%WD%\pkg\win32"
 
@@ -397,7 +398,7 @@ REM Main build sequence Ends
     )
 
     ECHO Renaming installer...
-    MOVE "%WD%\pkg\win32\Output\pgadmin4-setup.exe" "%DISTROOT%\%INSTALLERNAME%" > nul || EXIT /B 1
+    MOVE "%WD%\pkg\win32\Output\datalith-setup.exe" "%DISTROOT%\%INSTALLERNAME%" > nul || EXIT /B 1
 
     ECHO Location - %DISTROOT%\%INSTALLERNAME%
     ECHO Installer generated successfully.

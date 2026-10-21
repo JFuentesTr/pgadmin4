@@ -1,9 +1,12 @@
-#define MyAppName "pgAdmin 4"
+; Fluent fork: see FORK_PATCHES.md (branding defines, icon, sidebar, AppUserModelID)
+#define MyAppName "Datalith"
 #define MyAppVersion MYAPP_VERSION
-#define MyAppPublisher "The pgAdmin Development Team"
-#define MyAppURL "www.pgadmin.org"
-#define MyAppExeName "pgAdmin4.exe"
-#define MyAppID "C14F64E7-DCB9-4DE1-8560-16F08FCFF64E"
+#define MyAppPublisher "Datalith (based on pgAdmin 4)"
+#define MyAppURL "github.com/JFuentesTr/pgadmin4"
+#define MyAppExeName "Datalith.exe"
+#define MyAppIcon "datalith.ico"
+#define MyAppUserModelID "com.datalith.desktop"
+#define MyAppID "EF6E8F18-457C-455F-9E52-D01924C36A43"
 #define MyAppFullVersion MYAPP_FULLVERSION
 #define MyAppArchitecturesMode "x64"
 #define MyAppVCDist MYAPP_VCDIST
@@ -24,8 +27,8 @@ DefaultGroupName={#MyAppName}
 DisableWelcomePage=no
 DisableProgramGroupPage=auto
 LicenseFile=Resources\license.rtf
-OutputBaseFilename=pgadmin4-setup
-SetupIconFile=Resources\pgAdmin4.ico
+OutputBaseFilename=datalith-setup
+SetupIconFile=Resources\{#MyAppIcon}
 Compression=lzma
 SolidCompression=yes
 PrivilegesRequired=lowest
@@ -34,7 +37,7 @@ ChangesEnvironment=yes
 UninstallDisplayIcon={app}\runtime\{#MyAppExeName}
 ArchitecturesInstallIn64BitMode={#MyAppArchitecturesMode}
 AllowNoIcons=yes
-WizardImageFile=sidebar.bmp
+WizardImageFile=datalith-sidebar.bmp
 MinVersion={#MinimumWindowsVer}
 SignTool=pgAdminSigntool
 SignedUninstaller=yes
@@ -53,10 +56,12 @@ english.NewerVersionExists=A newer version of {#MyAppName}
 english.InvalidPath={#MyAppInvalidPath}
 
 [Icons]
-Name: {group}\{#MyAppName}; Filename: {app}\runtime\{#MyAppExeName}; IconFilename: {app}\pgAdmin4.ico; WorkingDir: {app}\runtime;
+Name: {group}\{#MyAppName}; Filename: {app}\runtime\{#MyAppExeName}; IconFilename: {app}\{#MyAppIcon}; WorkingDir: {app}\runtime; AppUserModelID: "{#MyAppUserModelID}"
 
 [Files]
-Source: "..\..\win-build\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs;
+; Fluent fork: Make.bat builds the executable as runtime\pgAdmin4.exe; install it as {#MyAppExeName}.
+Source: "..\..\win-build\*"; DestDir: "{app}"; Excludes: "\runtime\pgAdmin4.exe"; Flags: ignoreversion recursesubdirs createallsubdirs;
+Source: "..\..\win-build\runtime\pgAdmin4.exe"; DestDir: "{app}\runtime"; DestName: "{#MyAppExeName}"; Flags: ignoreversion;
 
 [Run]
 Filename: "{app}\installer\{#MyAppVCDist}"; StatusMsg: "VC runtime redistributable package"; Parameters: "/passive /verysilent /norestart"; Check: InstallVC;

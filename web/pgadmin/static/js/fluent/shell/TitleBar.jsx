@@ -23,7 +23,7 @@ import usePreferences from '../../../../preferences/static/js/store';
 import useShellInfo from './shellInfoStore';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import { requestPalette, PALETTE_MODES } from '../palette/paletteEvents';
-import { getAppLogoUrl } from './appLogo';
+import { getAppLogoUrl, getAppName } from './appLogo';
 
 const Root = styled('div')(({theme}) => ({
   flexShrink: 0,
@@ -305,7 +305,7 @@ export default function TitleBar() {
   return (
     <Root className={active ? '' : 'TitleBar-inactive'} style={{height: titleBarHeight}} data-test="fluent-title-bar">
       <img className='TitleBar-logo' src={getAppLogoUrl()} alt='' />
-      <span className='TitleBar-title'>pgAdmin 4</span>
+      <span className='TitleBar-title'>{getAppName()}</span>
       <div className='TitleBar-menus' ref={menusRef} role='menubar' onKeyDown={onMenuBarKeyDown}>
         {mainMenus.filter((m)=>m !== helpMenu).map(renderMenu)}
         <ViewMenu />

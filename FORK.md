@@ -1,8 +1,9 @@
-# pgAdmin 4 Fluent fork
+# Datalith (pgAdmin 4 Fluent fork)
 
-A personal fork of [pgAdmin 4](https://github.com/pgadmin-org/pgadmin4) with a
-redesigned user interface for the Windows desktop app: Fluent 2 / Windows 11
-look, a native title bar, and reworked navigation, Query Tool and dialogs.
+**Datalith** is a personal fork of [pgAdmin 4](https://github.com/pgadmin-org/pgadmin4)
+with a redesigned user interface for the Windows desktop app: Fluent 2 /
+Windows 11 look, a native title bar, and reworked navigation, Query Tool and
+dialogs.
 
 - Fork: `JFuentesTr/pgadmin4`, working branch **`redesign`**
 - Based on upstream tag **REL-9_18**
@@ -36,6 +37,8 @@ look, a native title bar, and reworked navigation, Query Tool and dialogs.
 | `web/pgadmin/static/js/fluent/forms/` | Connection string parser and the server form extension |
 | `runtime/src/js/win_shell.js` | Windows window integration: title bar overlay, Mica, accent colour, native theme, maximized state |
 | `runtime/src/html/fluent_splash.html` | Fluent splash screen (used when the custom title bar is on) |
+| `runtime/src/js/brand.js` | Desktop product name, userData folder (`%APPDATA%\Datalith\Desktop`), AppUserModelID, window icon |
+| `runtime/assets/datalith.*`, `web/pgadmin/static/img/fluent/`, `pkg/win32/Resources/datalith.ico`, `pkg/win32/datalith-sidebar.bmp` | Datalith icon (window, title bar, home page, executable, installer) and the installer wizard image |
 
 Desktop-only switches live in the title bar's **View** menu: *Mica Background*
 and *Use the Windows Title Bar* (falls back to the native frame and menu).
@@ -74,6 +77,26 @@ Fluent features:
 The Fluent UI is enabled by the **Preferences > Miscellaneous > User interface >
 Interface style** preference (`fluent` by default, `pgadmin` restores the
 original look).
+
+## Branding
+
+The product is called **Datalith**; "pgAdmin" and the PostgreSQL elephant are
+trademarks, so they are not used in the product name or icon. The pgAdmin
+copyright notice is kept (`LICENSE`, file headers, `APP_COPYRIGHT` in the
+docs), and the splash screen and the installer say "Based on pgAdmin 4".
+
+- Web: `web/branding.py` (`APP_NAME` and the data folder names). The title bar,
+  home page and window title read `pgBrowser.utils.app_name`.
+- Desktop: `runtime/src/js/brand.js` (name, userData folder, AppUserModelID,
+  icon).
+- Installer: `pkg/win32/installer.iss.in` and the `APP_EXE_NAME` /
+  `APP_ICON_FILE` variables in `Make.bat`.
+
+Datalith keeps its data in `%APPDATA%\Datalith` (server list in
+`datalith.db`), so it never touches an installed pgAdmin and does not see
+its registered servers (local PostgreSQL services are still auto-detected).
+Database sessions show up as `Datalith - CONN:...` in `application_name`.
+Documentation links still point to pgAdmin's documentation on purpose.
 
 ## Development setup (Windows)
 

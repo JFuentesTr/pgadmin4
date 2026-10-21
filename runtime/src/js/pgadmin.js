@@ -7,6 +7,8 @@
 //
 //////////////////////////////////////////////////////////////
 import { app, BrowserWindow, dialog, ipcMain, Menu, shell, screen, autoUpdater } from 'electron';
+// Fluent fork: product name and app paths, must run before misc.js and the store.
+import './brand.js';
 import axios from 'axios';
 import Store from 'electron-store';
 import fs from 'fs';

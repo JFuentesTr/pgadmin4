@@ -10,7 +10,7 @@
 import gettext from 'sources/gettext';
 import { radius, motion } from './tokens';
 import { mix } from './accent';
-import { getAppLogoUrl } from '../shell/appLogo';
+import { getAppLogoUrl, getAppName } from '../shell/appLogo';
 
 /* Fluent "ChevronRight 12 Regular" (MIT, microsoft/fluentui-system-icons). */
 const CHEVRON_RIGHT = 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 12 12\'%3E%3Cpath d=\'M4.65 2.15a.5.5 0 0 0 0 .7L7.79 6 4.65 9.15a.5.5 0 1 0 .7.7l3.5-3.5a.5.5 0 0 0 0-.7l-3.5-3.5a.5.5 0 0 0-.7 0Z\'/%3E%3C/svg%3E")';
@@ -394,7 +394,7 @@ export default function fluentGlobalCss(theme) {
           background: `url(${getAppLogoUrl()}) center / contain no-repeat`,
         },
         '&::after': {
-          content: '"pgAdmin 4"',
+          content: JSON.stringify(getAppName()),
         },
       },
       '& .Buttons-primaryButton, & .MuiButton-containedPrimary': {

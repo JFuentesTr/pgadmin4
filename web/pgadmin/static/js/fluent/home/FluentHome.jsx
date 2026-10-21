@@ -23,6 +23,7 @@ import { getEnvironment, formatServerVersion } from '../common/serverInfo';
 import { getServerColors } from '../../utils';
 import { requestPalette, PALETTE_MODES } from '../palette/paletteEvents';
 import EnvironmentBadge from '../shell/EnvironmentBadge';
+import { getAppName } from '../shell/appLogo';
 
 const TREE_EVENTS = [
   'pgadmin-browser:tree:added',
@@ -330,7 +331,7 @@ export default function FluentHome() {
   return (
     <Root data-test="fluent-home">
       <div className='Home-content'>
-        <h1 className='Home-title'>{gettext('Welcome to pgAdmin')}</h1>
+        <h1 className='Home-title'>{gettext('Welcome to %s', getAppName())}</h1>
         <p className='Home-subtitle'>{gettext('Manage, query and monitor your PostgreSQL servers.')}</p>
 
         <div className='Home-grid'>

@@ -14,6 +14,7 @@
 
 import { app, BrowserWindow, ipcMain, nativeTheme, systemPreferences } from 'electron';
 import os from 'os';
+import { BRAND } from './brand.js';
 
 const isWindows = process.platform === 'win32';
 const TITLE_BAR_HEIGHT = 40;
@@ -86,9 +87,10 @@ function applyStoredThemeSource(configStore) {
 // Options merged into the splash BrowserWindow. Also restores the last theme
 // the user picked so the splash does not flash the wrong colours.
 export function getSplashWindowOptions(configStore) {
-  if(!isCustomTitleBar(configStore)) return {};
+  if(!isCustomTitleBar(configStore)) return {icon: BRAND.icon};
   applyStoredThemeSource(configStore);
   return {
+    icon: BRAND.icon,
     width: 560,
     height: 360,
     backgroundColor: '#00000000',
@@ -101,11 +103,12 @@ export function getSplashFile(configStore, defaultFile) {
 
 // Options merged into the main BrowserWindow.
 export function getMainWindowOptions(configStore) {
-  if(!isCustomTitleBar(configStore)) return {};
+  if(!isCustomTitleBar(configStore)) return {icon: BRAND.icon};
   applyStoredThemeSource(configStore);
   const dark = nativeTheme.shouldUseDarkColors;
   const mica = isMica(configStore);
   return {
+    icon: BRAND.icon,
     titleBarStyle: 'hidden',
     titleBarOverlay: {
       color: '#00000000',
