@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<!--
+  pgAdmin 4 - Fluent fork
+  Portions Copyright (C) 2013 - 2026, The pgAdmin Development Team
+  This software is released under the PostgreSQL Licence
+
+  Splash screen used when the Windows 11 shell is enabled (win_shell.js).
+  pgadmin.js updates #loader-text-status while the server starts.
+-->
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>pgAdmin 4</title>
+    <style>
+      :root {
+        --card-bg: #F3F3F3;
+        --card-border: rgba(0, 0, 0, 0.0578);
+        --text: #1B1B1B;
+        --text-secondary: #5D5D5D;
+        --accent: #005FB8;
+        --track: rgba(0, 0, 0, 0.08);
+        --shadow: 0 16px 40px rgba(0, 0, 0, 0.22), 0 2px 8px rgba(0, 0, 0, 0.12);
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --card-bg: #202020;
+          --card-border: rgba(255, 255, 255, 0.0837);
+          --text: #FFFFFF;
+          --text-secondary: #C5C5C5;
+          --accent: #60CDFF;
+          --track: rgba(255, 255, 255, 0.1);
+          --shadow: 0 16px 40px rgba(0, 0, 0, 0.5), 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+      }
+      html, body {
+        margin: 0;
+        height: 100%;
+        background: transparent;
+        font-family: "Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif;
+        color: var(--text);
+        overflow: hidden;
+        user-select: none;
+      }
+      .card {
+        position: absolute;
+        inset: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 14px;
+        background: var(--card-bg);
+        border: 1px solid var(--card-border);
+        border-radius: 8px;
+        box-shadow: var(--shadow);
+        -webkit-app-region: drag;
+      }
+      .logo {
+        width: 72px;
+        height: 72px;
+      }
+      .title {
+        font-family: "Segoe UI Variable Display", "Segoe UI", system-ui, sans-serif;
+        font-size: 24px;
+        font-weight: 600;
+      }
+      /* Fluent indeterminate ProgressRing */
+      .ring {
+        width: 32px;
+        height: 32px;
+        margin-top: 10px;
+        animation: spin 2s linear infinite;
+      }
+      .ring circle {
+        fill: none;
+        stroke-width: 3;
+        stroke-linecap: round;
+      }
+      .ring .track {
+        stroke: var(--track);
+      }
+      .ring .arc {
+        stroke: var(--accent);
+        stroke-dasharray: 1 87;
+        animation: arc 1.5s ease-in-out infinite;
+      }
+      @keyframes spin {
+        to { transform: rotate(360deg); }
+      }
+      @keyframes arc {
+        0% { stroke-dasharray: 1 87; stroke-dashoffset: 0; }
+        50% { stroke-dasharray: 44 44; stroke-dashoffset: -16; }
+        100% { stroke-dasharray: 1 87; stroke-dashoffset: -87; }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .ring, .ring .arc { animation-duration: 6s; }
+      }
+      .status {
+        font-size: 13px;
+        color: var(--text-secondary);
+        min-height: 18px;
+      }
+      @media screen and (forced-colors: active) {
+        .card { border: 1px solid CanvasText; }
+        .ring .arc { stroke: Highlight; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <img class="logo" src="../../assets/pgAdmin4.png" alt="">
+      <div class="title">pgAdmin 4</div>
+      <svg class="ring" viewBox="0 0 32 32" aria-hidden="true">
+        <circle class="track" cx="16" cy="16" r="14"></circle>
+        <circle class="arc" cx="16" cy="16" r="14"></circle>
+      </svg>
+      <span id="loader-text-status" class="status" role="status">Starting the server...</span>
+    </div>
+  </body>
+</html>

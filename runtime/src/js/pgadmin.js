@@ -18,6 +18,8 @@ import { setupMenu } from './menu.js';
 import contextMenu from 'electron-context-menu';
 import { setupDownloader } from './downloader.js';
 import { setupAutoUpdater, updateConfigAndMenus } from './autoUpdaterHandler.js';
+// Fluent fork: see FORK_PATCHES.md
+import * as winShell from './win_shell.js';
 
 const configStore = new Store({
   defaults: {
@@ -376,6 +378,7 @@ function launchPgAdminWindow() {
       nodeIntegrationInSubFrames: true,
       preload: path.join(__dirname, 'pgadmin_preload.js'),
     },
+    ...winShell.getMainWindowOptions(configStore),
   });
 
   splashWindow.close();
@@ -391,6 +394,8 @@ function launchPgAdminWindow() {
 
   (bounds && isWithinDisplayBounds({x: bounds.x, y: bounds.y})) ? pgAdminMainScreen.setBounds(bounds) :
     pgAdminMainScreen.setBounds({x: 0, y: 0, width: 1024, height: 768});
+
+  winShell.setupMainWindow(pgAdminMainScreen, configStore, menuCallbacks);
 
   pgAdminMainScreen.show();
 
@@ -529,9 +534,10 @@ app.whenReady().then(() => {
     resizable: false,
     show: false,
     icon: '../../assets/pgAdmin4.png',
+    ...winShell.getSplashWindowOptions(configStore),
   });
 
-  splashWindow.loadFile('./src/html/splash.html');
+  splashWindow.loadFile(winShell.getSplashFile(configStore, './src/html/splash.html'));
   splashWindow.center();
 
   splashWindow.on('show', function () {

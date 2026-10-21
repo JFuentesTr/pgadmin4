@@ -36,6 +36,8 @@ import { PgAdminProvider, usePgAdmin } from './PgAdminProvider';
 import PreferencesComponent from '../../preferences/static/js/components/PreferencesComponent';
 import { ApplicationStateProvider } from '../../settings/static/ApplicationStateProvider';
 import { appAutoUpdateNotifier } from './helpers/appAutoUpdateNotifier';
+// Fluent fork: see FORK_PATCHES.md
+import TitleBar, { useTitleBarHeight } from './fluent/shell/TitleBar';
 
 const objectExplorerGroup  = {
   tabLocked: true,
@@ -116,6 +118,7 @@ function Layouts({browser}) {
   const {
     config, enabled, currentWorkspace, isObjectExplorerVisible, setObjectExplorerVisible,
   } = useWorkspace();
+  const titleBarHeight = useTitleBarHeight();
 
   useEffect(()=>{
     // File → Reset Layout puts the layout back to its defaults, which has to
@@ -131,7 +134,7 @@ function Layouts({browser}) {
 
   return (
     <ApplicationStateProvider>
-      <div style={{display: 'flex', height: (browser != 'Electron' ? 'calc(100% - 30px)' : '100%')}}>
+      <div style={{display: 'flex', height: (browser != 'Electron' ? 'calc(100% - 30px)' : `calc(100% - ${titleBarHeight}px)`)}}>
         {enabled && <WorkspaceToolbar/> }
         <Layout
           getLayoutInstance={(obj)=>{
@@ -248,6 +251,7 @@ export default function BrowserComponent({pgAdmin}) {
         <ModalProvider>
           <NotifierProvider pgAdmin={pgAdmin} pgWindow={pgWindow} onReady={()=>setUiReady(true)}/>
           {browser != 'Electron' && <AppMenuBar />}
+          {browser == 'Electron' && <TitleBar />}
           <Layouts browser={browser} />
         </ModalProvider>
         <ObjectBreadcrumbs pgAdmin={pgAdmin} />

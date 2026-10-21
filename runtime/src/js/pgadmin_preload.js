@@ -39,3 +39,18 @@ contextBridge.exposeInMainWorld('electronUI', {
     ipcRenderer.on('notifyAppAutoUpdate', (_, data) => callback(data));
   },
 });
+
+// Fluent fork: see FORK_PATCHES.md and win_shell.js
+contextBridge.exposeInMainWorld('electronWin', {
+  getShellInfo: () => ipcRenderer.invoke('winGetShellInfo'),
+  onShellInfoChanged: (callback) => {
+    ipcRenderer.removeAllListeners('winShellInfoChanged');
+    ipcRenderer.on('winShellInfoChanged', (_event, info) => callback(info));
+  },
+  onMaximizedChanged: (callback) => {
+    ipcRenderer.removeAllListeners('winMaximizedChanged');
+    ipcRenderer.on('winMaximizedChanged', (_event, maximized) => callback(maximized));
+  },
+  setTitleBarTheme: (theme) => ipcRenderer.send('winSetTitleBarTheme', theme),
+  command: (name) => ipcRenderer.send('winCommand', name),
+});

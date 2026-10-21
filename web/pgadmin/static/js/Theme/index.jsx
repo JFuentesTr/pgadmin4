@@ -30,6 +30,8 @@ import pgadminOverride from './overrides/pgadmin.classes.override';
 import reactAspenOverride from './overrides/reactaspen.override';
 import usePreferences from '../../../preferences/static/js/store';
 import szhMenuOverride from './overrides/szhmenu.override';
+// Fluent fork: see FORK_PATCHES.md
+import { useFluentOptions, applyFluentBase, applyFluentFinal } from '../fluent/theme';
 
 /* Common settings across all themes */
 let basicSettings = createTheme();
@@ -922,6 +924,7 @@ export default function Theme({children}) {
 
   // Initialize theme state
   const [theme, setTheme] = useState(parseSystemTheme(selectedTheme).theme);
+  const fluentOptions = useFluentOptions(prefStore);
 
   // Memoize the theme object
   const themeObj = useMemo(()=>{
@@ -934,8 +937,9 @@ export default function Theme({children}) {
       baseTheme = getHightContrastTheme(baseTheme);
       break;
     }
-    return getFinalTheme(baseTheme);
-  }, [theme]);
+    baseTheme = applyFluentBase(baseTheme, theme, fluentOptions);
+    return applyFluentFinal(getFinalTheme(baseTheme));
+  }, [theme, fluentOptions]);
 
   // Handle theme updates
   useEffect(() => {

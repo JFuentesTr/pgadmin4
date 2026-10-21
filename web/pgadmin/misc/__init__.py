@@ -21,6 +21,7 @@ from pgadmin.utils.constants import PREF_LABEL_USER_INTERFACE, \
 from pgadmin.utils.csrf import pgCSRFProtect
 from pgadmin.utils.session import cleanup_session_files
 from pgadmin.misc.themes import get_all_themes
+from pgadmin.misc.fluent_ui import register_fluent_preferences
 from pgadmin.utils.ajax import precondition_required, make_json_response, \
     internal_server_error, make_response
 from pgadmin.utils.heartbeat import log_server_heartbeat, \
@@ -112,6 +113,8 @@ class MiscModule(PgAdminModule):
                 'Diff tools.'
             )
         )
+        # Fluent fork: see FORK_PATCHES.md
+        register_fluent_preferences(self.preference)
         self.preference.register(
             'user_interface', 'open_in_res_workspace',
             gettext("Open the Query Tool/PSQL in their respective workspaces"),
