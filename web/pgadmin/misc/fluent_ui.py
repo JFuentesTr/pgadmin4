@@ -40,6 +40,24 @@ def register_fluent_preferences(preference):
         )
     )
     preference.register(
+        'user_interface', 'properties_dialog_mode',
+        gettext("Object dialogs"), 'options', 'flyout',
+        category_label=PREF_LABEL_USER_INTERFACE,
+        options=[
+            {'label': gettext('Side panel'), 'value': 'flyout'},
+            {'label': gettext('Floating window'), 'value': 'floating'},
+        ],
+        control_props={
+            'allowClear': False,
+            'creatable': False,
+        },
+        help_str=gettext(
+            'Fluent interface style only. Side panel opens the Create and '
+            'Properties dialogs docked on the right, so the Object Explorer '
+            'stays visible. Floating window keeps the original behaviour.'
+        )
+    )
+    preference.register(
         'user_interface', 'prod_safe_mode',
         gettext("Confirm changes on production servers"), 'boolean', True,
         category_label=PREF_LABEL_USER_INTERFACE,

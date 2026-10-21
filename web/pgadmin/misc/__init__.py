@@ -217,6 +217,10 @@ class MiscModule(PgAdminModule):
         from .workspaces import blueprint as module
         self.submodules.append(module)
 
+        # Fluent fork: see FORK_PATCHES.md
+        from .fluent import blueprint as module
+        self.submodules.append(module)
+
         def autovacuum_sessions():
             try:
                 with app.app_context():

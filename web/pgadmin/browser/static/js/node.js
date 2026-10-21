@@ -15,6 +15,8 @@ import ErrorBoundary from '../../../static/js/helpers/ErrorBoundary';
 import toPx from '../../../static/js/to_px';
 import usePreferences from '../../../preferences/static/js/store';
 import { evalFunc } from '../../../static/js/utils';
+// Fluent fork: see FORK_PATCHES.md
+import { openPropertiesDialog } from '../../../static/js/fluent/dialogs/openPropertiesDialog';
 
 define('pgadmin.browser.node', [
   'sources/gettext', 'sources/pgadmin',
@@ -909,10 +911,10 @@ define('pgadmin.browser.node', [
       if(update) {
         dialogProps.onClose(true);
         setTimeout(()=>{
-          pgBrowser.docker.default_workspace.openDialog(panelData, w, h);
+          openPropertiesDialog(pgBrowser.docker.default_workspace, panelData, w, h);
         }, 10);
       } else {
-        pgBrowser.docker.default_workspace.openDialog(panelData, w, h);
+        openPropertiesDialog(pgBrowser.docker.default_workspace, panelData, w, h);
       }
     },
     _find_parent_node: function(t, i, d) {

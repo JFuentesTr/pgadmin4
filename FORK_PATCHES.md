@@ -12,7 +12,8 @@ release, these are the only files expected to conflict.
 
 | File | Change | Why |
 |---|---|---|
-| `web/pgadmin/misc/__init__.py` | Import and call `register_fluent_preferences()` | Registers the `ui_style` and `use_windows_accent` preferences |
+| `web/pgadmin/misc/__init__.py` | Import and call `register_fluent_preferences()`; append the `misc/fluent` blueprint in `register()` | Fork preferences and the `fluent.test_connection` endpoint |
+| `web/pgadmin/browser/static/js/node.js` | Import `openPropertiesDialog`; `showPropertiesDialog()` calls it instead of `docker.openDialog()` (two places) | Create/Properties dialogs as a side panel; server form extension (connection string, Test connection) |
 | `web/pgadmin/static/js/Theme/index.jsx` | Import from `../fluent/theme`; `useFluentOptions()`; `applyFluentBase()` / `applyFluentFinal()` around `getFinalTheme()` | Applies the Fluent design system when `ui_style` is `fluent` |
 | `web/pgadmin/static/js/BrowserComponent.jsx` | Import from `./fluent/shell`; render `TitleBar` under Electron, `StatusBar` and `CommandPalette` after the layout; subtract `useShellChromeHeight()` from the layout height | Title bar, status bar and search palette |
 | `web/pgadmin/dashboard/static/js/Dashboard.jsx` | Import `FluentWelcome`; render it with `Fallback={WelcomeDashboard}` instead of `WelcomeDashboard` | Fluent home page when no connected server is selected |

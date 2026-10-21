@@ -121,11 +121,11 @@ export default function fluentGlobalCss(theme) {
             backgroundColor: f.shellBg,
           },
         },
+        /* Object dialogs docked on the right (fluent/dialogs/openPropertiesDialog.jsx) */
         '&.dock-style-dialogs': {
-          borderRadius: radius.overlay + 'px',
-          overflow: 'hidden',
-          border: `1px solid ${t.strokeSurface}`,
-          boxShadow: t.shadowDialog,
+          borderLeft: `1px solid ${t.strokeDivider}`,
+          boxShadow: f.mode === 'dark' ? '-8px 0 16px rgba(0, 0, 0, 0.24)' : '-8px 0 16px rgba(0, 0, 0, 0.06)',
+          zIndex: 1,
           '& .dock-bar': {
             backgroundColor: t.layerBg,
             paddingLeft: '8px',
@@ -205,6 +205,22 @@ export default function fluentGlobalCss(theme) {
           },
         },
       },
+    },
+    /* In the side panel, labels go above their controls (narrow form). */
+    '.dock-layout > .dock-hbox > .dock-panel.dock-style-dialogs [data-testid="form-input"] > .MuiGrid-root': {
+      width: '100% !important',
+      maxWidth: '100% !important',
+      flexBasis: 'auto !important',
+      '&:first-of-type': {
+        paddingBottom: '4px',
+      },
+    },
+    /* Floating dialogs keep the card look. */
+    '.dock-layout .dock-fbox .dock-panel.dock-style-dialogs': {
+      borderRadius: radius.overlay + 'px',
+      overflow: 'hidden',
+      border: `1px solid ${t.strokeSurface}`,
+      boxShadow: t.shadowDialog,
     },
     '.dock-dropdown': {
       '& .dock-dropdown-menu': {
@@ -422,6 +438,79 @@ export default function fluentGlobalCss(theme) {
       '& .Alert-margin': {
         marginLeft: 0,
         minWidth: '96px',
+      },
+    },
+
+    /* ---------- Preferences, Windows 11 Settings style ---------- */
+    'body .PreferencesComponent-header': {
+      padding: '8px 16px',
+      gap: '4px',
+      '& .PreferencesComponent-searchInput': {
+        maxWidth: '320px',
+      },
+    },
+    'body .PreferencesComponent-treeContainer': {
+      /* !important: the Resizable wrapper sets its size inline. */
+      minWidth: '260px !important',
+      padding: '4px',
+      borderRight: `1px solid ${t.strokeDivider}`,
+      '& [role="treeitem"] > div': {
+        height: '100%',
+        borderRadius: radius.control + 'px',
+        display: 'flex',
+        alignItems: 'center',
+      },
+      '& [role="treeitem"]:hover > div': {
+        backgroundColor: t.subtleHoverBg,
+      },
+      '& .PgTree-focusedNode': {
+        position: 'relative',
+        backgroundColor: t.subtleSelectedBg + ' !important',
+        color: t.text,
+        '&::before': {
+          content: '""',
+          position: 'absolute',
+          left: 0,
+          top: '50%',
+          width: '3px',
+          height: '14px',
+          marginTop: '-7px',
+          borderRadius: '2px',
+          backgroundColor: accent.main,
+        },
+      },
+    },
+    'body .PreferencesComponent-preferencesContainer': {
+      padding: '12px 20px',
+      backgroundColor: f.mode === 'dark' ? t.surfaceBg : t.layerBg,
+      '& .PreferencesComponent-preferencesContainerBackground, & .FormView-nonTabPanelContent': {
+        backgroundColor: 'transparent',
+      },
+      /* Each setting is a card: name on the left, control on the right. */
+      '& [data-testid="form-input"]': {
+        alignItems: 'center',
+        padding: '12px 16px',
+        marginBottom: '4px',
+        borderRadius: radius.control + 'px',
+        border: `1px solid ${t.strokeCard}`,
+        backgroundColor: f.mode === 'dark' ? t.layerAltBg : '#FFFFFF',
+        '& > .MuiGrid-root:first-of-type:not(:last-of-type)': {
+          width: '40% !important',
+          maxWidth: '40% !important',
+          flexBasis: 'auto !important',
+          paddingRight: '16px',
+        },
+        '& > .MuiGrid-root:last-of-type:not(:first-of-type)': {
+          width: '60% !important',
+          maxWidth: '60% !important',
+          flexBasis: 'auto !important',
+        },
+        '& .MuiFormHelperText-root': {
+          fontSize: '0.75rem',
+          lineHeight: '16px',
+          color: t.textSecondary,
+          marginTop: '4px',
+        },
       },
     },
 

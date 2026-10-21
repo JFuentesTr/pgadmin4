@@ -30,7 +30,10 @@ look, a native title bar, and reworked navigation, Query Tool and dialogs.
 | `web/pgadmin/static/js/fluent/common/` | Shared helpers: preference saving, server/environment info |
 | `web/pgadmin/static/js/fluent/querytool/` | Query Tool: production guard, SQL analysis, copy as INSERT/UPDATE, grid density |
 | `web/regression/javascript/fluent/` | Jest tests for the fork's logic |
-| `web/pgadmin/misc/fluent_ui.py` | `ui_style` and `use_windows_accent` preferences |
+| `web/pgadmin/misc/fluent_ui.py` | Fork preferences (`ui_style`, `properties_dialog_mode`, `prod_safe_mode`, `results_grid_density`, `use_windows_accent`) |
+| `web/pgadmin/misc/fluent/` | Fork endpoints: `fluent.test_connection` (try a server connection without saving it) |
+| `web/pgadmin/static/js/fluent/dialogs/` | Object dialogs as a side panel |
+| `web/pgadmin/static/js/fluent/forms/` | Connection string parser and the server form extension |
 | `runtime/src/js/win_shell.js` | Windows window integration: title bar overlay, Mica, accent colour, native theme, maximized state |
 | `runtime/src/html/fluent_splash.html` | Fluent splash screen (used when the custom title bar is on) |
 
@@ -54,6 +57,15 @@ Fluent features:
   CALL/DO, data-modifying CTEs, EXPLAIN ANALYZE of those) or saving grid edits
   asks for confirmation. UPDATE/DELETE without WHERE, DROP and TRUNCATE are
   highlighted. Works with the classic style too.
+- **Object dialogs as a side panel**: Create/Properties dialogs dock on the
+  right so the Object Explorer stays visible (*Object dialogs* preference:
+  side panel or floating window). Other dialogs stay floating.
+- **Register server faster**: paste a `postgresql://` URI or a `key=value`
+  connection string in *Connection string* (Connection tab) to fill host,
+  port, database, user, password and SSL parameters; *Test connection* tries
+  the settings without saving them (not for SSH tunnels or Kerberos).
+- **Preferences** look like Windows 11 Settings: wider navigation, one card
+  per setting.
 - **Query Tool**: CommandBar-style toolbars with labelled Run and Explain,
   lighter result grid, *Copy as INSERT statement* / *Copy as UPDATE
   statements* in the copy options menu, and *Results grid density*
