@@ -7,6 +7,7 @@
 //
 //////////////////////////////////////////////////////////////
 
+import gettext from 'sources/gettext';
 import { radius, motion } from './tokens';
 import { mix } from './accent';
 import { getAppLogoUrl } from '../shell/appLogo';
@@ -448,6 +449,150 @@ export default function fluentGlobalCss(theme) {
       border: `1px solid ${t.strokeSurface}`,
       boxShadow: t.shadowFlyout,
       padding: '10px 12px',
+    },
+
+    /* ---------- Query Tool (runs in its own iframe) ---------- */
+    '#sqleditor-container': {
+      position: 'relative',
+      /* Toolbars as Windows 11 CommandBars: borderless buttons, groups
+       * separated by a thin divider instead of segmented borders. */
+      '& .MuiButtonGroup-root': {
+        gap: '2px',
+        alignItems: 'center',
+        '& .Buttons-iconButtonDefault, & .Buttons-iconButtonDefault.MuiButtonGroup-grouped': {
+          border: 'none',
+          borderRadius: radius.control + 'px',
+          backgroundColor: 'transparent',
+          color: t.text,
+          height: '30px',
+          minWidth: '30px',
+          '&:hover': {
+            backgroundColor: t.subtleHoverBg,
+          },
+          '&.Mui-disabled': {
+            backgroundColor: 'transparent',
+            color: t.textDisabled,
+          },
+        },
+        '& .Buttons-splitButton.Buttons-iconButtonDefault': {
+          minWidth: '18px',
+          width: '18px',
+          padding: 0,
+        },
+        /* e.g. an active filter: accent tint instead of a filled button */
+        '& .Buttons-primaryButton': {
+          border: 'none',
+          borderRadius: radius.control + 'px',
+          height: '30px',
+          backgroundColor: accent.light,
+          color: accent.main,
+          '&:hover': {
+            backgroundColor: accent.lightHover,
+          },
+        },
+        /* Labelled primary commands. Titles go through gettext, so the
+         * selectors and labels follow the UI language. */
+        [`& [data-label=${JSON.stringify(gettext('Execute script'))}]`]: {
+          width: 'auto',
+          padding: '0 10px 0 6px',
+          color: accent.main,
+          '&::after': {
+            content: JSON.stringify(gettext('Run')),
+            marginLeft: '4px',
+            fontSize: '0.8125rem',
+            color: t.text,
+          },
+          '&.Mui-disabled::after': {
+            color: t.textDisabled,
+          },
+        },
+        [`& [data-label=${JSON.stringify(gettext('Explain'))}]`]: {
+          width: 'auto',
+          padding: '0 10px 0 6px',
+          '&::after': {
+            content: JSON.stringify(gettext('Explain')),
+            marginLeft: '4px',
+            fontSize: '0.8125rem',
+          },
+        },
+      },
+      '& .MuiButtonGroup-root + .MuiButtonGroup-root, & .MuiInputBase-root + .MuiButtonGroup-root': {
+        marginLeft: '4px',
+        paddingLeft: '6px',
+        borderLeft: `1px solid ${t.strokeDivider}`,
+        borderRadius: 0,
+      },
+      /* The Query Tool is its own iframe, so this media query measures the
+       * tool panel. When narrow, drop the labels and tighten the spacing
+       * before the buttons wrap onto a second row. */
+      '@media (max-width: 1000px)': {
+        [`& .MuiButtonGroup-root [data-label=${JSON.stringify(gettext('Execute script'))}], & .MuiButtonGroup-root [data-label=${JSON.stringify(gettext('Explain'))}]`]: {
+          padding: '0 4px',
+          '&::after': {
+            display: 'none',
+          },
+        },
+        '& .MuiButtonGroup-root .Buttons-iconButtonDefault:not(.Buttons-splitButton)': {
+          minWidth: '28px',
+          paddingLeft: '2px',
+          paddingRight: '2px',
+        },
+        '& .MuiButtonGroup-root + .MuiButtonGroup-root, & .MuiInputBase-root + .MuiButtonGroup-root': {
+          marginLeft: '2px',
+          paddingLeft: '3px',
+        },
+        '& div:has(> .ConnectionBar-root) + .MuiBox-root': {
+          gap: '2px',
+        },
+      },
+      /* Result grid: light header and row number column, subtle stripes. */
+      '& .rdg': {
+        '& .QueryTool-columnHeader, & .rdg-header-row .rdg-cell:nth-of-type(1)': {
+          backgroundColor: t.layerBg,
+        },
+        '& .rdg-row .rdg-cell:nth-of-type(1)': {
+          backgroundColor: t.layerBg + ' !important',
+          color: t.textSecondary,
+        },
+        '& .rdg-row[aria-selected="true"] .rdg-cell:nth-of-type(1)': {
+          backgroundColor: accent.light + ' !important',
+          color: t.text,
+        },
+        '& .QueryTool-colHeaderSelected': {
+          backgroundColor: accent.light,
+          color: t.text,
+          outlineColor: accent.main,
+        },
+        '& .rdg-row.rdg-row-even': {
+          backgroundColor: mix(t.surfaceBg, t.text, f.mode === 'dark' ? 0.035 : 0.02),
+        },
+      },
+    },
+    /* Production marker, set by fluent/querytool/productionGuard.jsx. */
+    'html[data-pga-env="prod"] #sqleditor-container::before': {
+      content: '""',
+      position: 'absolute',
+      left: 0,
+      right: 0,
+      top: 0,
+      height: '3px',
+      backgroundColor: '#C42B1C',
+      zIndex: 10,
+      pointerEvents: 'none',
+    },
+    'html[data-pga-env="prod"] .ConnectionBar-root::before': {
+      content: JSON.stringify(gettext('PRODUCTION')),
+      order: -1,
+      alignSelf: 'center',
+      marginRight: '6px',
+      padding: '1px 6px',
+      borderRadius: '4px',
+      fontSize: '0.6875rem',
+      fontWeight: 700,
+      letterSpacing: '0.04em',
+      color: '#FFFFFF',
+      backgroundColor: '#C42B1C',
+      whiteSpace: 'nowrap',
     },
 
     /* ---------- Data grids (react-data-grid) ---------- */

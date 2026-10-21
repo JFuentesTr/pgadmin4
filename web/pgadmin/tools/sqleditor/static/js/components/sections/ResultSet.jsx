@@ -32,6 +32,10 @@ import { usePgAdmin } from '../../../../../../static/js/PgAdminProvider';
 import pgAdmin from 'sources/pgadmin';
 import { connectServer, connectServerModal } from '../connectServer';
 import { useLatestFunc } from '../../../../../../static/js/custom_hooks';
+// Fluent fork: see FORK_PATCHES.md
+import { copyRowsAsSql, getFullRows } from '../../../../../../static/js/fluent/querytool/sqlFromRows';
+import { getGridDensityProps } from '../../../../../../static/js/fluent/querytool/gridDensity';
+import { confirmProductionDataSave } from '../../../../../../static/js/fluent/querytool/productionGuard';
 
 const StyledBox = styled(Box)(({theme}) => ({
   display: 'flex',
@@ -1252,6 +1256,10 @@ export function ResultSet() {
     if(!_.size(dataChangeStore.updated) && !_.size(dataChangeStore.added) && !_.size(dataChangeStore.deleted)) {
       return;
     }
+    // Fluent fork: see FORK_PATCHES.md
+    if(!await confirmProductionDataSave(queryToolCtx, dataChangeStore)) {
+      return;
+    }
     rsu.current.historyQuerySource = QuerySources.SAVE_DATA;
     setLoaderText(gettext('Saving data...'));
     try {
@@ -1370,7 +1378,7 @@ export function ResultSet() {
     return [startColumnIdx, endColumnIdx, startRowIdx, endRowIdx];
   };
 
-  const copyDataFunc = (withHeaders=false)=>{
+  const copyDataFunc = (withHeaders=false, sqlFormat=null)=>{
     const queryToolPref = queryToolCtx.preferences.sqleditor;
     let copyData = new CopyData({
       quoting: queryToolPref.results_grid_quoting,
@@ -1398,6 +1406,15 @@ export function ResultSet() {
       copyRows = [{[selectedCell.current[1].key]: selectedCell.current[0][selectedCell.current[1].key]}];
     }
     if(copyRows.length > 0 && copyCols.length >0) {
+      // Fluent fork: see FORK_PATCHES.md
+      if(sqlFormat) {
+        copyRowsAsSql({
+          format: sqlFormat, rows: getFullRows({selectedRows, selectedColumns, selectedCell, rows, copyRows}),
+          columns: copyCols, allColumns: columns, query: rsu.current.query,
+          transId: queryToolCtx.params.trans_id, api: queryToolCtx.api,
+        });
+        return;
+      }
       copyData.copyRowsToCsv(copyRows, copyCols, withHeaders);
     }
   };
@@ -1712,6 +1729,7 @@ export function ResultSet() {
             onSelectedCellChange={setSelectedCell}
             onSelectedRangeChange={setSelectedRange}
             stripedRows={queryToolCtx.preferences?.sqleditor?.striped_rows}
+            {...getGridDensityProps(queryToolCtx.preferences?.misc)}
           />
         </Box>
       </>}

@@ -25,6 +25,8 @@ import PropTypes from 'prop-types';
 import { useApplicationState } from '../../../../../../settings/static/ApplicationStateProvider';
 import { useDelayDebounce } from '../../../../../../static/js/custom_hooks';
 import { FileManagerUtils } from '../../../../../../misc/file_manager/static/js/components/FileManager';
+// Fluent fork: see FORK_PATCHES.md
+import { confirmProductionExecution, useProductionIndicator } from '../../../../../../static/js/fluent/querytool/productionGuard';
 
 
 async function registerAutocomplete(editor, api, transId) {
@@ -69,6 +71,7 @@ export default function Query({onTextSelect, setQtStatePartial}) {
   const modalId = MODAL_DIALOGS.QT_CONFIRMATIONS;
   const fmUtilsObj = useMemo(()=>new FileManagerUtils(queryToolCtx.api, {}), []);
   const initialTransIdRef = React.useRef(queryToolCtx.params.trans_id);
+  useProductionIndicator(queryToolCtx.params);
 
   const highlightError = (cmObj, {errormsg: result, data}, executeCursor)=>{
     let errorLineNo = 0,
@@ -165,7 +168,9 @@ export default function Query({onTextSelect, setQtStatePartial}) {
         query = query || editor.current?.getValue() || '';
       }
       if(query) {
-        eventBus.fireEvent(QUERY_TOOL_EVENTS.EXECUTION_START, query, {explainObject, macroSQL, external, executeCursor});
+        confirmProductionExecution(queryToolCtx, query, explainObject).then((ok)=>{
+          ok && eventBus.fireEvent(QUERY_TOOL_EVENTS.EXECUTION_START, query, {explainObject, macroSQL, external, executeCursor});
+        });
       }
     } else {
       eventBus.fireEvent(QUERY_TOOL_EVENTS.EXECUTION_START, null, {});

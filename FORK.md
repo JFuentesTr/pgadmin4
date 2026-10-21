@@ -28,6 +28,8 @@ look, a native title bar, and reworked navigation, Query Tool and dialogs.
 | `web/pgadmin/static/js/fluent/palette/` | Search palette: Ctrl+P objects, Ctrl+Shift+P commands, shortcut forwarding from tool iframes |
 | `web/pgadmin/static/js/fluent/home/` | Home page that replaces the upstream welcome dashboard |
 | `web/pgadmin/static/js/fluent/common/` | Shared helpers: preference saving, server/environment info |
+| `web/pgadmin/static/js/fluent/querytool/` | Query Tool: production guard, SQL analysis, copy as INSERT/UPDATE, grid density |
+| `web/regression/javascript/fluent/` | Jest tests for the fork's logic |
 | `web/pgadmin/misc/fluent_ui.py` | `ui_style` and `use_windows_accent` preferences |
 | `runtime/src/js/win_shell.js` | Windows window integration: title bar overlay, Mica, accent colour, native theme, maximized state |
 | `runtime/src/html/fluent_splash.html` | Fluent splash screen (used when the custom title bar is on) |
@@ -45,6 +47,17 @@ Fluent features:
 - **Environment badges**: tag a server `prod`/`production`, `staging`/`qa`/`test`
   or `dev`/`local` to get a PROD / STAGING / DEV badge in the status bar and
   on the home page.
+- **Production safe mode** (Preferences > Miscellaneous > User interface >
+  *Confirm changes on production servers*, on by default): Query Tool tabs on a
+  `prod` server show a red PRODUCTION marker, and running statements that
+  change data or the schema (INSERT/UPDATE/DELETE/MERGE, DDL, GRANT/REVOKE,
+  CALL/DO, data-modifying CTEs, EXPLAIN ANALYZE of those) or saving grid edits
+  asks for confirmation. UPDATE/DELETE without WHERE, DROP and TRUNCATE are
+  highlighted. Works with the classic style too.
+- **Query Tool**: CommandBar-style toolbars with labelled Run and Explain,
+  lighter result grid, *Copy as INSERT statement* / *Copy as UPDATE
+  statements* in the copy options menu, and *Results grid density*
+  (compact / comfortable) in the same preferences page.
 
 The Fluent UI is enabled by the **Preferences > Miscellaneous > User interface >
 Interface style** preference (`fluent` by default, `pgadmin` restores the

@@ -37,6 +37,8 @@ import CodeMirror from '../../../../../../static/js/components/ReactCodeMirror';
 import { setEditorPosition } from '../QueryToolDataGrid/Editors';
 import { InputText } from '../../../../../../static/js/components/FormComponents';
 import { isEmptyString, minMaxValidator } from '../../../../../../static/js/validators';
+// Fluent fork: see FORK_PATCHES.md
+import CopyAsSqlMenuItems from '../../../../../../static/js/fluent/querytool/CopyAsSqlMenuItems';
 
 const StyledDiv = styled('div')(({theme})=>({
   padding: '2px',
@@ -481,6 +483,7 @@ export function ResultSetToolbar({query, canEdit, totalRowCount, pagination, all
         label={gettext('Copy Options Menu')}
       >
         <PgMenuItem hasCheck value="copy_with_headers" checked={checkedMenuItems['copy_with_headers']} onClick={checkMenuClick}>{gettext('Copy with headers')}</PgMenuItem>
+        <CopyAsSqlMenuItems eventBus={eventBus} />
       </PgMenu>
       <PgMenu
         anchorRef={pasetMenuRef}
