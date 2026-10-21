@@ -21,6 +21,8 @@ import { usePgAdmin } from '../../PgAdminProvider';
 import { useForceUpdate } from '../../custom_hooks';
 import usePreferences from '../../../../preferences/static/js/store';
 import useShellInfo from './shellInfoStore';
+import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
+import { requestPalette, PALETTE_MODES } from '../palette/paletteEvents';
 import { getAppLogoUrl } from './appLogo';
 
 const Root = styled('div')(({theme}) => ({
@@ -53,6 +55,51 @@ const Root = styled('div')(({theme}) => ({
     alignItems: 'center',
     gap: '2px',
     WebkitAppRegion: 'no-drag',
+  },
+  '& .TitleBar-searchWrap': {
+    flex: 1,
+    minWidth: 0,
+    display: 'flex',
+    justifyContent: 'center',
+    padding: '0 12px',
+  },
+  '& .TitleBar-search': {
+    WebkitAppRegion: 'no-drag',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '8px',
+    width: '100%',
+    maxWidth: '440px',
+    minWidth: '120px',
+    height: '28px',
+    padding: '0 8px 0 10px',
+    border: `1px solid ${theme.fluent?.tokens.strokeControl}`,
+    borderRadius: theme.shape.borderRadius,
+    backgroundColor: theme.fluent?.tokens.controlBg,
+    color: theme.palette.text.secondary,
+    font: 'inherit',
+    fontSize: '0.75rem',
+    cursor: 'text',
+    '&:hover': {
+      backgroundColor: theme.fluent?.tokens.controlHoverBg,
+    },
+    '&:focus-visible': {
+      outline: `2px solid ${theme.palette.text.primary}`,
+      outlineOffset: '-2px',
+    },
+    '& .TitleBar-searchLabel': {
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+      whiteSpace: 'nowrap',
+    },
+    '& kbd': {
+      marginLeft: 'auto',
+      fontFamily: 'inherit',
+      fontSize: '0.6875rem',
+      padding: '0 4px',
+      borderRadius: '3px',
+      border: `1px solid ${theme.fluent?.tokens.strokeControl}`,
+    },
   },
   '& .TitleBar-menuButton': {
     height: '28px',
@@ -220,6 +267,7 @@ export function useTitleBarHeight() {
 export default function TitleBar() {
   const pgAdmin = usePgAdmin();
   const forceUpdate = useForceUpdate();
+  const theme = useTheme();
   const {customTitleBar, titleBarHeight} = useShellInfo();
   const active = useWindowActive();
   const menusRef = useRef(null);
@@ -263,6 +311,15 @@ export default function TitleBar() {
         <ViewMenu />
         {helpMenu && renderMenu(helpMenu)}
       </div>
+      {theme.fluent &&
+        <div className='TitleBar-searchWrap'>
+          <button className='TitleBar-search' onClick={()=>requestPalette(PALETTE_MODES.OBJECTS)}
+            title={gettext('Search objects and commands')}>
+            <SearchRoundedIcon style={{fontSize: '16px'}} />
+            <span className='TitleBar-searchLabel'>{gettext('Search objects and commands')}</span>
+            <kbd>Ctrl+P</kbd>
+          </button>
+        </div>}
     </Root>
   );
 }

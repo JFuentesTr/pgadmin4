@@ -424,6 +424,19 @@ export default function fluentGlobalCss(theme) {
       },
     },
 
+    /* Hover breadcrumbs (ObjectBreadcrumbs.jsx): float above the status bar
+     * as a tooltip-like card. */
+    'body [data-testid="object-breadcrumbs"]': {
+      bottom: '32px',
+      left: '8px',
+      borderRadius: radius.control + 'px',
+      border: `1px solid ${t.strokeSurface}`,
+      backgroundColor: t.tooltipBg,
+      color: t.text,
+      boxShadow: t.shadowTooltip,
+      padding: '4px 8px',
+    },
+
     /* ---------- InfoBars and toasts ---------- */
     'body [data-test="notifier-message"][class*="FormFooter-container"]': {
       borderColor: t.strokeCard,

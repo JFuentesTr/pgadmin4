@@ -24,13 +24,27 @@ look, a native title bar, and reworked navigation, Query Tool and dialogs.
 | Path | Content |
 |---|---|
 | `web/pgadmin/static/js/fluent/theme/` | Fluent design system: tokens, accent colours, MUI theme, global CSS |
-| `web/pgadmin/static/js/fluent/shell/` | Desktop shell UI: title bar, shell info store |
+| `web/pgadmin/static/js/fluent/shell/` | Title bar (desktop), status bar, environment badge, shell info store |
+| `web/pgadmin/static/js/fluent/palette/` | Search palette: Ctrl+P objects, Ctrl+Shift+P commands, shortcut forwarding from tool iframes |
+| `web/pgadmin/static/js/fluent/home/` | Home page that replaces the upstream welcome dashboard |
+| `web/pgadmin/static/js/fluent/common/` | Shared helpers: preference saving, server/environment info |
 | `web/pgadmin/misc/fluent_ui.py` | `ui_style` and `use_windows_accent` preferences |
 | `runtime/src/js/win_shell.js` | Windows window integration: title bar overlay, Mica, accent colour, native theme, maximized state |
 | `runtime/src/html/fluent_splash.html` | Fluent splash screen (used when the custom title bar is on) |
 
 Desktop-only switches live in the title bar's **View** menu: *Mica Background*
 and *Use the Windows Title Bar* (falls back to the native frame and menu).
+
+Fluent features:
+
+- **Ctrl+P** searches the loaded Object Explorer nodes, then every object of
+  the selected database (Search Objects API). Enter reveals it in the tree.
+- **Ctrl+Shift+P** (or `>` in the search box) lists every menu action plus
+  workspace, theme, zoom and Object Explorer commands, including
+  *Object Explorer: Show Common Object Types Only*.
+- **Environment badges**: tag a server `prod`/`production`, `staging`/`qa`/`test`
+  or `dev`/`local` to get a PROD / STAGING / DEV badge in the status bar and
+  on the home page.
 
 The Fluent UI is enabled by the **Preferences > Miscellaneous > User interface >
 Interface style** preference (`fluent` by default, `pgadmin` restores the

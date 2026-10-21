@@ -20,6 +20,8 @@ import { PgIconButton } from '../../../static/js/components/Buttons';
 import BlockRoundedIcon from '@mui/icons-material/BlockRounded';
 import StopRoundedIcon from '@mui/icons-material/StopRounded';
 import WelcomeDashboard from './WelcomeDashboard';
+// Fluent fork: see FORK_PATCHES.md
+import FluentWelcome from '../../../static/js/fluent/home/FluentWelcome';
 import ActiveQuery from './ActiveQuery.ui';
 import ServerLog from './ServerLog.ui';
 import _ from 'lodash';
@@ -931,7 +933,8 @@ function Dashboard({
           </div>
         </Box>
       ) : (
-        <WelcomeDashboard
+        <FluentWelcome
+          Fallback={WelcomeDashboard}
           pgBrowser={pgAdmin.Browser}
           node={node}
           itemData={nodeData}

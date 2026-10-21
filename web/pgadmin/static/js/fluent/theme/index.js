@@ -16,6 +16,7 @@ import getFluentBaseTheme from './fluentBaseTheme';
 import fluentComponents from './fluentComponents';
 import fluentGlobalCss from './fluentGlobalCss';
 import useShellInfo, { initShellInfo } from '../shell/shellInfoStore';
+import { setPaletteShortcutsEnabled } from '../palette/paletteEvents';
 
 const FLUENT_MODES = ['light', 'dark'];
 
@@ -29,6 +30,12 @@ export function useFluentOptions(prefStore) {
   useEffect(()=>{
     initShellInfo();
   }, []);
+
+  /* Theme is mounted by every pgAdmin page, tool iframes included, so this
+   * is where the Ctrl+P / Ctrl+Shift+P forwarding gets installed. */
+  useEffect(()=>{
+    setPaletteShortcutsEnabled(enabled);
+  }, [enabled]);
 
   return useMemo(()=>({
     enabled,

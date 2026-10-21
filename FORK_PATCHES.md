@@ -14,6 +14,7 @@ release, these are the only files expected to conflict.
 |---|---|---|
 | `web/pgadmin/misc/__init__.py` | Import and call `register_fluent_preferences()` | Registers the `ui_style` and `use_windows_accent` preferences |
 | `web/pgadmin/static/js/Theme/index.jsx` | Import from `../fluent/theme`; `useFluentOptions()`; `applyFluentBase()` / `applyFluentFinal()` around `getFinalTheme()` | Applies the Fluent design system when `ui_style` is `fluent` |
-| `web/pgadmin/static/js/BrowserComponent.jsx` | Import `TitleBar`; render it under Electron; subtract `useTitleBarHeight()` from the layout height | Custom Windows 11 title bar in desktop mode |
+| `web/pgadmin/static/js/BrowserComponent.jsx` | Import from `./fluent/shell`; render `TitleBar` under Electron, `StatusBar` and `CommandPalette` after the layout; subtract `useShellChromeHeight()` from the layout height | Title bar, status bar and search palette |
+| `web/pgadmin/dashboard/static/js/Dashboard.jsx` | Import `FluentWelcome`; render it with `Fallback={WelcomeDashboard}` instead of `WelcomeDashboard` | Fluent home page when no connected server is selected |
 | `runtime/src/js/pgadmin.js` | Import `win_shell.js`; spread `getSplashWindowOptions()` / `getMainWindowOptions()` into the window options; `getSplashFile()`; call `setupMainWindow()` before `show()` | Title bar overlay, Mica, native theme, accent colour, maximized state |
 | `runtime/src/js/pgadmin_preload.js` | Second `contextBridge.exposeInMainWorld('electronWin', ...)` appended at the end | Renderer API for `win_shell.js` (no change to `electronUI`) |
